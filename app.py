@@ -23,8 +23,21 @@ d = digit()
 # To show static text if the server url is opened in a browser
 @app.route('/', methods=['GET'])
 def index():
-    return '''<h1>diGit API Server by Sanjeev Tripathi  : <a href="https://www.linkedin.com/in/sanjeev309/" target="_blank">[LinkedIn]</a></h1>
-        </br><p>Server is running</p>'''
+    return '''<h2>diGit API Server by Sanjeev  </h2>
+    <h4><a href="https://www.linkedin.com/in/sanjeev309/" target="_blank">[LinkedIn]</a> <a href="https://www.github.com/sanjeev309/diGit" target="_blank">[Github]</a></h4>
+        <p>Server is running</p>
+        <h3> How to use: </h3>
+        
+        <p> diGit return an image with number when a number is passed to the API</p>
+        <b>For example: </b>
+        </br></br>
+        Digits: <a href="http://0.0.0.0:5000/digit?n=420"> Send request for 420</a> : gives <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/wAALCAAFAA8BAREA/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/9oACAEBAAA/AMPwVcS+Kr7wTE6x2c63Go2izW0k0ZYxafbJG7FZFbOEQEIyAgY4ySbmr2V4fhj8RLye/wA+R4gu4Z4YkKRzSPc2ZEm0scbfLYAHcQJDz1z/AP/Z" width=60px height=20px alt="digit test">
+        </br>
+        Blank space: use <a href="http://0.0.0.0:5000/spacer"> spacer</a> : gives <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/wAALCAAFAAIBAREA/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/9oACAEBAAA/APn+v//Z" width=8px height=20px alt='spacer_test'>
+        </br></br>
+        
+        All responses are base64 encoded and can be directly used for rendering.
+        '''
 
 
 # Helps get rid of favicon 404 in request on heroku
@@ -50,7 +63,8 @@ def number_api():
 
     img_base64 = base64.b64encode(rawBytes.read())
 
-    return jsonify({'image': str(img_base64)})
+    print(img_base64)
+    return "data:image/jpeg;base64," + img_base64.decode('utf-8')
 
 
 @app.route('/spacer', methods=['GET'])
@@ -63,7 +77,7 @@ def spacer_api():
 
     img_base64 = base64.b64encode(rawBytes.read())
 
-    return jsonify({'image': str(img_base64)})
+    return "data:image/jpeg;base64," + img_base64.decode('utf-8')
 
 
 # RUN FLASK APPLICATION
