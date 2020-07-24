@@ -9,8 +9,14 @@ class digit:
 
     def get_digit(self, n):
 
+        if isinstance(n, str):
+            n = int(n)
+
         if n is 0:
             return np.repeat(self.frames[:, :, 0], len(str(n)))
+
+        if n < 0:
+            n = n * -1
 
         num_digit = len(str(n))
 
@@ -36,6 +42,7 @@ class digit:
 
     def __del__(self):
         del self.frames
+
 
 if __name__ == '__main__':
     d = digit()
