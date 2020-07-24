@@ -1,43 +1,72 @@
-import numpy as np
-from PIL import Image
+import os
+import base64
+import io
+
+from flask import Flask, request, send_from_directory, jsonify
+from flask_cors import CORS
+
+from digit import digit
+
+# Create Flask application
+app = Flask(__name__)
+CORS(app)
+
+# Initialise Query Object in global scope
+d = digit()
 
 
-class digit:
+# # The route where POST queries are received
+# @app.route('/', methods=['POST'])
+# def home():
+#
 
-    def __init__(self):
-        self.frames = np.load('data/digits.npy')
+# To show static text if the server url is opened in a browser
+@app.route('/', methods=['GET'])
+def index():
+    return '''<h1>diGit API Server by Sanjeev Tripathi  : <a href="https://www.linkedin.com/in/sanjeev309/" target="_blank">[LinkedIn]</a></h1>
+        </br><p>Server is running</p>'''
 
-    def get_digit(self, n):
 
-        if n is 0:
-            return np.repeat(self.frames[:, :, 0], len(str(n)))
+# Helps get rid of favicon 404 in request on heroku
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory('static',
+                               'favicon.png', mimetype='image/png')
 
-        num_digit = len(str(n))
 
-        result_frame = np.empty([5, 0], dtype=np.uint8)
+@app.route('/digit', methods=['GET'])
+def number_api():
+    if 'n' not in request.args:
+        return {"error": "No number in request"}
 
-        n = int(n)
+    number = request.args['n']
 
-        for i in range(num_digit):
-            digit = n % 10
-            result_frame = np.hstack([self.frames[:, :, digit], result_frame])
-            n = n // 10
+    image = d.get_digit(number)
 
-        result_frame = (result_frame * 255).astype(np.uint8)
+    rawBytes = io.BytesIO()
 
-        img = Image.fromarray(result_frame, 'L')
-        return img
+    image.save(rawBytes, "JPEG")
+    rawBytes.seek(0)
 
-    def get_spacer(self, width=2):
-        spacer = np.zeros([5, width], dtype=np.uint8)
-        spacer = (spacer * 255).astype(np.uint8)
-        spacer_img = Image.fromarray(spacer, 'L')
-        return spacer_img
+    img_base64 = base64.b64encode(rawBytes.read())
 
-    def __del__(self):
-        del self.frames
+    return jsonify({'image': str(img_base64)})
 
+
+@app.route('/spacer', methods=['GET'])
+def spacer_api():
+    spacer = d.get_spacer()
+    rawBytes = io.BytesIO()
+
+    spacer.save(rawBytes, "JPEG")
+    rawBytes.seek(0)
+
+    img_base64 = base64.b64encode(rawBytes.read())
+
+    return jsonify({'image': str(img_base64)})
+
+
+# RUN FLASK APPLICATION
 if __name__ == '__main__':
-    d = digit()
-    res = d.get_digit(1234)
-    res.show()
+    # RUNNING FLASK APP
+    app.run(debug=False, host='0.0.0.0', port=5000)
