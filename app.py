@@ -54,7 +54,7 @@ def number_api():
 
     number = request.args['n']
 
-    image = d.get_digit(number)
+    image = d.digitize(number)
 
     rawBytes = io.BytesIO()
 
