@@ -52,9 +52,14 @@ def number_api():
     if 'n' not in request.args:
         return {"error": "No number in request"}
 
+    scale = 1
+
+    if 'scale' in request.args:
+        scale = int(request.args['scale'])
+
     number = request.args['n']
 
-    image = d.digitize(number)
+    image = d.digitize(number, scale)
 
     rawBytes = io.BytesIO()
 

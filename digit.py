@@ -10,7 +10,7 @@ class digit:
         self.symbols = np.load('data/symbols.npy')
         self.symbol_dict = pickle.load(open('data/symbol_dict.pkl', "rb"))
 
-    def digitize(self, s):
+    def digitize(self, s, scale = 1):
         digit_group = s.split('.')
 
         if len(digit_group) > 1:
@@ -26,8 +26,11 @@ class digit:
 
             # if len(digit_group) > 1:
             #     digitised = np.hstack([digitised, self.get_symbols('.')])
+        digitised = digitised.resize((digitised.shape[0] * scale,digitised.shape[1] * scale))
 
         digitised = (digitised * 255).astype(np.uint8)
+
+
 
         digitised = Image.fromarray(digitised, 'L')
 
