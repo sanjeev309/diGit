@@ -1,6 +1,7 @@
 import pickle
 import numpy as np
 from PIL import Image
+import cv2
 
 
 class digit:
@@ -26,10 +27,10 @@ class digit:
 
             # if len(digit_group) > 1:
             #     digitised = np.hstack([digitised, self.get_symbols('.')])
-        digitised = digitised.resize((digitised.shape[0] * scale,digitised.shape[1] * scale))
 
         digitised = (digitised * 255).astype(np.uint8)
-
+        digitised = cv2.resize(digitised, (digitised.shape[1] * scale, digitised.shape[0] * scale), cv2.INTER_NEAREST)
+        # digitised = digitised.resize((digitised.shape[0] * scale,digitised.shape[1] * scale))
 
 
         digitised = Image.fromarray(digitised, 'L')
