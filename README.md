@@ -1,3 +1,6 @@
+
+![Heroku](https://heroku-badge.herokuapp.com/?app=digit-server)
+
 # diGIT
 
 An API to serve image as numbers.
@@ -34,13 +37,13 @@ All responses are base64 encoded and can be directly used for rendering.
 -------------------------------
 
 
-Now, since github does not support base64 encoded images yet, to use diGit, please use the API to fetch respective images, store it and then refer it in your [](README.md).
+Now, since github does not support base64 encoded images in README yet, 
+to use diGit, please use the API to fetch respective images, store it and then refer it in your [README.md](README.md).
 
 
 ## Authors
 
-  - **Sanjeev Tripathi**
-    [Sanjeev Tripathi](https://www.linkedin.com/in/sanjeev309/)
+   - [**Sanjeev Tripathi**](https://www.linkedin.com/in/sanjeev309/)
 
 
 ## License
